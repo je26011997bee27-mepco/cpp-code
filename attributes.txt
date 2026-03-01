@@ -1,0 +1,61 @@
+#include <iostream>
+#include <sstream>
+#include <map>
+#include <stack>
+using namespace std;
+
+int main() {
+    int n, q;
+    cin >> n >> q;
+    cin.ignore();
+
+    map<string, string> attributes;
+    stack<string> tags;
+    string line;
+
+    for (int i = 0; i < n; i++) {
+        getline(cin, line);
+
+        // Closing tag
+        if (line.substr(0, 2) == "</") {
+            tags.pop();
+        } 
+        // Opening tag
+        else {
+            line = line.substr(1, line.size() - 2); // remove < and >
+            stringstream ss(line);
+            string tagName;
+            ss >> tagName;
+
+            // Build full tag path
+            string fullTag = tagName;
+            if (!tags.empty()) {
+                fullTag = tags.top() + "." + tagName;
+            }
+
+            tags.push(fullTag);
+
+            // Parse attributes
+            string attrName, equalSign, attrValue;
+            while (ss >> attrName >> equalSign >> attrValue) {
+                attrValue = attrValue.substr(1, attrValue.size() - 2); // remove quotes
+                string key = fullTag + "~" + attrName;
+                attributes[key] = attrValue;
+            }
+        }
+    }
+
+    // Process queries
+    while (q--) {
+        string query;
+        getline(cin, query);
+
+        if (attributes.find(query) != attributes.end()) {
+            cout << attributes[query] << endl;
+        } else {
+            cout << "Not Found!" << endl;
+        }
+    }
+
+    return 0;
+}
