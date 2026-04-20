@@ -1,0 +1,39 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+   int n,a[10][10];
+   int sum;
+   sum=0;
+   cin>>n;
+   for (int i=0;i<n;i++)
+   {
+      for (int j=0;j<n;j++)
+      {
+         cin>>a[i][j];
+      }
+   }
+   for (int k=0;k<n;k++)
+   {
+      sum=sum+a[k][k];
+   }
+   for (int x=0;x<n;x++)
+   {
+      for (int y=0;y<n;y++)
+      {
+         if(x!=y && y>x)
+         {
+            a[x][y]=sum;
+         }
+      }
+   }
+   for (int m=0;m<n;m++)
+   {
+      for (int o=0;o<n;o++)
+      {
+         cout<<a[m][o]<<" ";
+      }
+      cout<<endl;
+   }
+   return 0;
+}
